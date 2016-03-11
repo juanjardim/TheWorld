@@ -8,9 +8,9 @@ namespace TheWorld.Models
 
         public string Name { get; set; }
 
-        public double Longitude {get; set; }
+        public double Longitude { get; set; }
 
-        public double Latitude {get; set; }
+        public double Latitude { get; set; }
 
         public DateTime Arrival { get; set; }
 

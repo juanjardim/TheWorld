@@ -1,12 +1,11 @@
 ﻿using System;
-using Microsoft.Data.Entity;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Data.Entity;
 using Microsoft.Extensions.Logging;
 
 namespace TheWorld.Models
 {
-
     public class WorldRepository : IWorldRepository
     {
         private readonly WorldContext _context;
@@ -23,7 +22,6 @@ namespace TheWorld.Models
             try
             {
                 return _context.Trips.OrderBy(t => t.Name).ToList();
-
             }
             catch (Exception ex)
             {
@@ -37,9 +35,9 @@ namespace TheWorld.Models
             try
             {
                 return _context.Trips
-                .Include(t => t.Stops)
-                .OrderBy(t => t.Name)
-                .ToList();
+                    .Include(t => t.Stops)
+                    .OrderBy(t => t.Name)
+                    .ToList();
             }
             catch (Exception ex)
             {
@@ -55,7 +53,7 @@ namespace TheWorld.Models
 
         public bool SaveAll()
         {
-           return  _context.SaveChanges() > 0;
+            return _context.SaveChanges() > 0;
         }
 
         public Trip GetTripByName(string tripName)

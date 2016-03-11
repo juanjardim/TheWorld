@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
-using Microsoft.Data.Entity.Storage;
 
 namespace TheWorld.Models
 {
@@ -10,6 +9,7 @@ namespace TheWorld.Models
         {
             Database.EnsureCreated();
         }
+
         public DbSet<Trip> Trips { get; set; }
 
         public DbSet<Stop> Stops { get; set; }

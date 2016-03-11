@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using AutoMapper;
@@ -13,8 +12,8 @@ namespace TheWorld.Controllers.Api
     [Route("api/trips")]
     public class TripController : Controller
     {
-        private readonly IWorldRepository _repository;
         private readonly ILogger<TripController> _logger;
+        private readonly IWorldRepository _repository;
 
         public TripController(IWorldRepository repository, ILogger<TripController> logger)
         {
@@ -30,7 +29,7 @@ namespace TheWorld.Controllers.Api
         }
 
         [HttpPost]
-        public JsonResult Post([FromBody]TripViewModel vm)
+        public JsonResult Post([FromBody] TripViewModel vm)
         {
             try
             {
@@ -43,28 +42,26 @@ namespace TheWorld.Controllers.Api
 
                     if (_repository.SaveAll())
                     {
-                        Response.StatusCode = (int)HttpStatusCode.Created;
+                        Response.StatusCode = (int) HttpStatusCode.Created;
                         return Json(Mapper.Map<TripViewModel>(newTrip));
                     }
-
                 }
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                Response.StatusCode = (int) HttpStatusCode.BadRequest;
                 return Json(new
                 {
                     Message = "Failed",
-                    ModelState = ModelState
+                    ModelState
                 });
             }
             catch (Exception ex)
             {
                 _logger.LogError("Fail to save new trip", ex);
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                Response.StatusCode = (int) HttpStatusCode.BadRequest;
                 return Json(new
                 {
-                    Message = ex.Message
+                    ex.Message
                 });
             }
-
         }
     }
 }

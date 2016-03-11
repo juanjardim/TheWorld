@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Microsoft.AspNet.Authorization;
+﻿using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 using TheWorld.Models;
 using TheWorld.Services;
@@ -9,8 +8,8 @@ namespace TheWorld.Controllers.Web
 {
     public class AppController : Controller
     {
-        private IMailService _mailService;
-        private IWorldRepository _repository;
+        private readonly IMailService _mailService;
+        private readonly IWorldRepository _repository;
 
         public AppController(IMailService service, IWorldRepository repository)
         {
@@ -57,11 +56,9 @@ namespace TheWorld.Controllers.Web
                     ModelState.Clear();
                     ViewBag.Message = "Mail Sent. Thanks";
                 }
-
             }
 
             return View();
-
         }
     }
 }

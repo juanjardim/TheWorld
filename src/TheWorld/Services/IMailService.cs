@@ -1,6 +1,4 @@
-﻿
-
-namespace TheWorld.Services
+﻿namespace TheWorld.Services
 {
     public interface IMailService
     {

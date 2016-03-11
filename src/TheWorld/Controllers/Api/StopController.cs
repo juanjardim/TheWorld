@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -14,13 +13,13 @@ using TheWorld.ViewModels;
 namespace TheWorld.Controllers.Api
 {
     [Route("/api/trips/{tripName}/stops")]
-    public class StopController: Controller
+    public class StopController : Controller
     {
-        private readonly IWorldRepository _repository;
         private readonly ILogger<StopController> _logger;
-        private CoordService _coordService;
+        private readonly IWorldRepository _repository;
+        private readonly CoordService _coordService;
 
-        public StopController(IWorldRepository repository, 
+        public StopController(IWorldRepository repository,
             ILogger<StopController> logger, CoordService coordService)
         {
             _repository = repository;
@@ -49,11 +48,10 @@ namespace TheWorld.Controllers.Api
                     message = ex.Message
                 });
             }
-           
         }
 
         [HttpPost]
-        public async Task<JsonResult> Post(string tripName, [FromBody]StopViewModel vm)
+        public async Task<JsonResult> Post(string tripName, [FromBody] StopViewModel vm)
         {
             try
             {
@@ -80,7 +78,6 @@ namespace TheWorld.Controllers.Api
                         return Json(Mapper.Map<StopViewModel>(newStop));
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -95,6 +92,5 @@ namespace TheWorld.Controllers.Api
             Response.StatusCode = (int) HttpStatusCode.BadRequest;
             return Json("Validation failed on new stop");
         }
-
     }
 }

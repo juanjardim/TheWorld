@@ -1,8 +1,6 @@
-﻿using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +16,7 @@ namespace TheWorld
     public class Startup
     {
         public static IConfigurationRoot Configuration;
+
         public Startup(IApplicationEnvironment appEnv)
         {
             var builder = new ConfigurationBuilder()
@@ -34,7 +33,7 @@ namespace TheWorld
         {
             services.AddMvc()
                 .AddJsonOptions(
-                 opt => { opt.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver(); }
+                    opt => { opt.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver(); }
                 );
             services.AddEntityFramework()
                 .AddSqlServer()
@@ -46,7 +45,7 @@ namespace TheWorld
                 config.Password.RequiredLength = 8;
                 config.Cookies.ApplicationCookie.LoginPath = "/Auth/Login";
             })
-            .AddEntityFrameworkStores<WorldContext>();
+                .AddEntityFrameworkStores<WorldContext>();
 
             services.AddLogging();
 
@@ -65,7 +64,6 @@ namespace TheWorld
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public async void Configure(IApplicationBuilder app, WorldContextSeedData seeder, ILoggerFactory loggerFactory)
         {
-
             loggerFactory.AddDebug(LogLevel.Warning);
             //app.UseDefaultFiles();
             app.UseStaticFiles();
@@ -80,10 +78,7 @@ namespace TheWorld
 
             app.UseMvc(config =>
             {
-                config.MapRoute(
-                    name: "Default",
-                    template: "{controller}/{action}/{id?}",
-                    defaults: new { controller = "App", action = "Index" }
+                config.MapRoute("Default", "{controller}/{action}/{id?}", new {controller = "App", action = "Index"}
                     );
             });
 
