@@ -56,19 +56,54 @@ namespace TheWorld.Models
             return _context.SaveChanges() > 0;
         }
 
-        public Trip GetTripByName(string tripName)
+        public Trip GetTripByName(string tripName, string username)
         {
-            return _context.Trips
+            try
+            {
+                return _context.Trips
                 .Include(t => t.Stops)
-                .FirstOrDefault(t => t.Name == tripName);
+                .FirstOrDefault(t => t.Name == tripName && t.UserName == username);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Could not get the trip {tripName} for user: {username} in the database", ex);
+                return null;
+            }
+
         }
 
-        public void AddStop(string tripName, Stop newStop)
+        public void AddStop(string tripName, string userName, Stop newStop)
         {
-            var theTrip = GetTripByName(tripName);
-            newStop.Order = theTrip.Stops.Max(s => s.Order) + 1;
-            theTrip.Stops.Add(newStop);
-            _context.Stops.Add(newStop);
+            try
+            {
+                var theTrip = GetTripByName(tripName, userName);
+                if (theTrip == null)
+                    throw new Exception("Trip not found");
+                newStop.Order = theTrip.Stops.Max(s => s.Order) + 1;
+                theTrip.Stops.Add(newStop);
+                _context.Stops.Add(newStop);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Could not add the stop for trip: {tripName}; {userName} to the database", ex);
+            }
+        }
+
+        public IEnumerable<Trip> GetUserTripsWithStops(string name)
+        {
+            try
+            {
+                return _context.Trips
+                    .Include(t => t.Stops)
+                    .OrderBy(t => t.Name)
+                    .Where(t => t.UserName == name)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Could not get trips with stops for user; {name} from database", ex);
+                return null;
+            }
         }
     }
 }
