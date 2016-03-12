@@ -1,36 +1,49 @@
 ﻿(function () {
-	"use strict";
+    "use strict";
 
-	angular.module("app-trips")
+    angular.module("app-trips")
         .controller("tripsController", tripsController);
 
-	function tripsController(dataService) {
-		var vm = this;
+    function tripsController(dataService) {
+        var vm = this;
 
-		vm.trips = [];
-		vm.errorMessage = "";
-		vm.isBusy = true;
-	    getTrips();
+        vm.trips = [];
+        vm.errorMessage = "";
+        vm.isBusy = true;
+        getTrips();
 
-		vm.newTrip = {};
+        vm.newTrip = {};
 
-		vm.addTrip = function() {
-		    vm.trips.push({ name: vm.newTrip.name, created: new Date() });
-		    vm.newTrip = {};
-		}
-
+        vm.addTrip = function () {
+            vm.isBusy = true;
+            vm.errorMessage = "";
+            console.log("Was called");
+            dataService.addTrip({
+                name: vm.newTrip.name,
+                created: new Date()
+            }).then(function (trip) {
+                vm.trips.push(trip);
+                vm.isBusy = false;
+                vm.newTrip = {};
+            })
+		    .catch(function (error) {
+		        vm.errorMessage = 'Failed to save new trip ';
+		        vm.isBusy = false;
+		        console.log(vm.errorMessage);
+		    });
+        }
 
         function getTrips() {
             dataService.getTrips()
-                .then(function(data) {
+                .then(function (data) {
                     vm.trips = data;
                     vm.isBusy = false;
                 })
-                .catch(function(error) {
+                .catch(function (error) {
                     vm.errorMessage = 'Something went wrong! ' + error;
                     vm.isBusy = false;
                 });
         }
-	}
+    }
 
 })();

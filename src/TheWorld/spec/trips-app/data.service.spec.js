@@ -53,6 +53,9 @@
         }
     ];
 
+    var newTrip = {
+        "name": "My Trip"
+    };
 
     beforeEach(module('app-trips'));
 
@@ -81,5 +84,21 @@
         $httpBackend.flush();
         expect(response[0].id).toBe(trips[0].id);
         expect(response[0].name).toBe(trips[0].name);
+    });
+
+    it("Should add a new trip", function () {
+        var response;
+        var expectedUrl = "http://localhost:8050/api/trips";
+
+        $httpBackend.when('POST', expectedUrl)
+            .respond(200, newTrip);
+
+        dataService.addTrip()
+            .then(function(data) {
+                response = data;
+            });
+
+        $httpBackend.flush();
+        expect(response.name).toBe(newTrip.name);
     });
 })
