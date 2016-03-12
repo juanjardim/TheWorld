@@ -3,6 +3,8 @@
     angular.module("app-trips")
         .controller("tripEditorController", tripEditorController);
 
+    tripEditorController.$inject = ['$routeParams', 'dataService'];
+
     function tripEditorController($routeParams, dataService) {
         var vm = this;
 

@@ -4,6 +4,8 @@
     angular.module("app-trips", ["ngRoute"])
     .config(configuration);
 
+    configuration.$inject = ['$routeProvider', '$locationProvider'];
+
     function configuration($routeProvider, $locationProvider) {
 
         $locationProvider.html5Mode(true);

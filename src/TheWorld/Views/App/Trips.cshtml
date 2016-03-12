@@ -10,10 +10,19 @@
     <script src="http://maps.googleapis.com/maps/api/js"></script>
     <script src="~/lib/gmaps/gmaps.min.js"></script>
     <script src="~/lib/travelMap/travelmap.js"></script>
+
+<environment names="Development">
     <script src="~/js/app-trips.js"></script>
     <script src="~/js/tripsController.js"></script>
     <script src="~/js/tripEditorController.js"></script>
     <script src="~/js/dataService.js"></script>
+</environment>
+
+<environment names="Production,Staging">
+    <script src="~/lib/_app/app.min.js"></script>
+</environment>
+
+    
 }
 
 <div class="row" data-ng-app="app-trips">

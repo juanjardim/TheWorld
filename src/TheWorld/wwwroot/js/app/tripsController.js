@@ -4,6 +4,8 @@
     angular.module("app-trips")
         .controller("tripsController", tripsController);
 
+    tripsController.$inject = ['dataService'];
+
     function tripsController(dataService) {
         var vm = this;
 

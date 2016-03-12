@@ -52,9 +52,9 @@ namespace TheWorld
                     OnRedirectToLogin = ctx =>
                     {
                         if (ctx.Request.Path.StartsWithSegments("/api") &&
-                            ctx.Response.StatusCode == (int) HttpStatusCode.OK)
+                            ctx.Response.StatusCode == (int)HttpStatusCode.OK)
                         {
-                            ctx.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
+                            ctx.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
 
                         }
                         else
@@ -84,9 +84,21 @@ namespace TheWorld
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public async void Configure(IApplicationBuilder app, WorldContextSeedData seeder, ILoggerFactory loggerFactory)
+        public async void Configure(IApplicationBuilder app,
+            WorldContextSeedData seeder,
+            ILoggerFactory loggerFactory,
+            IHostingEnvironment env)
         {
-            loggerFactory.AddDebug(LogLevel.Warning);
+            if (env.IsDevelopment())
+            {
+                loggerFactory.AddDebug(LogLevel.Information);
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                loggerFactory.AddDebug(LogLevel.Error);
+                //app.UseExceptionHandler("/App/Error");
+            }
             //app.UseDefaultFiles();
             app.UseStaticFiles();
 
@@ -100,7 +112,7 @@ namespace TheWorld
 
             app.UseMvc(config =>
             {
-                config.MapRoute("Default", "{controller}/{action}/{id?}", new {controller = "App", action = "Index"}
+                config.MapRoute("Default", "{controller}/{action}/{id?}", new { controller = "App", action = "Index" }
                     );
             });
 
