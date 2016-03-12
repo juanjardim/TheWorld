@@ -1,13 +1,38 @@
 ﻿<div>
-    <a href="/" class="btn btn-sm btn-default">
-        <i class="fa fa-angle-left"></i>  Back
-    </a>
+    <div>
+        <a href="/" class="btn btn-sm btn-default">
+            <i class="fa fa-angle-left"></i> Back
+        </a>
+    </div>
     <div class="col-md-3">
         <h2>{{vm.tripName}}</h2>
         <div data-ng-show="vm.isBusy" class="text-center">
             <i class="fa fa-spinner fa-spin"></i> Loading....
         </div>
         <div class="alert alert-danger" data-ng-show="vm.errorMessage">{{vm.errorMessage}}</div>
+
+        <form name="newStopForm" novalidate data-ng-submit="vm.addStop()">
+            <div class="form-group">
+                <label for="arrival">Date</label>
+                <input type="text" name="arrival" id="arrival" class="form-control"
+                       data-ng-model="vm.newStop.arrival" required
+                       data-ng-pattern="/^(\d{2})\/(\d{2})\/(\d{4})$/"/>
+                <span class="text-danger" data-ng-show="newStopForm.arrival.$error.required">Required</span>
+                <span class="text-danger" data-ng-show="newStopForm.arrival.$error.pattern">Must be in format of MM/DD/YYYY</span>
+
+            </div>
+            <div class="form-group">
+                <label for="name">Location</label>
+                <input type="text" name="name" id="name" class="form-control" data-ng-model="vm.newStop.name" required data-ng-minlength="5"/>
+                <span class="text-danger" data-ng-show="newStopForm.name.$error.required">Required location name</span>
+                <span class="text-danger" data-ng-show="newStopForm.name.$error.minlength">Must be 5 characters or more</span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Edit" class="btn btn-success"
+                       data-ng-disabled="newStopForm.$invalid" />
+            </div>
+        </form>
+
         <table class="table table-responsive table-striped">
             <tr>
                 <th>Location</th>
@@ -18,21 +43,9 @@
                 <td>{{stop.arrival | date:shortDate}}</td>
             </tr>
         </table>
-        <form id="tripsEditorForm" novalidate>
-            <div class="form-group">
-                <label for="date">Date</label>
-                <input type="text" name="date" id="date" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label for="location">Location</label>
-                <input type="text" name="location" id="location" class="form-control" />
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Edit" class="btn btn-success" />
-            </div>
-        </form>
     </div>
     <div class="col-md-9">
         <h2>The Map</h2>
+        <div id="map"></div>
     </div>
 </div>

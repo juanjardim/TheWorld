@@ -56,6 +56,10 @@
     var newTrip = {
         "name": "My Trip"
     };
+    var newStop = {
+        "name": "Atlanta, GA",
+        "arrival": new Date()
+    }
 
     var stops = [
         {
@@ -161,5 +165,20 @@
             });
         $httpBackend.flush();
         expect(response[0].name).toBe(stops[0].name);
+    });
+
+    it("should add a new stop to the trip", function() {
+        var response;
+        var expectedUrl = "http://localhost:8050/api/trips/Us%20trip/stops";
+
+        $httpBackend.when('POST', expectedUrl)
+            .respond(200, newStop);
+
+        dataService.addStop(newStop, "Us%20trip")
+            .then(function(data) {
+                response = data;
+            });
+        $httpBackend.flush();
+        expect(response.name).toBe(newStop.name);
     });
 })

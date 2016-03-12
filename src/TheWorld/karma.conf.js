@@ -15,9 +15,13 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: [
+            'wwwroot/lib/underscore/underscore-min.js',
             'wwwroot/lib/angular/angular.js',
             'wwwroot/lib/angular-mocks/angular-mocks.js',
             'wwwroot/lib/angular-route/angular-route.min.js',
+            'wwwroot/lib/googleMaps.js',
+            'wwwroot/lib/gmaps/gmaps.min.js',
+            'wwwroot/lib/travelMap/travelmap.js',
             'wwwroot/js/**/*.js',
             'spec/**/*.js'
         ],

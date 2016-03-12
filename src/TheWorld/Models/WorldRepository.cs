@@ -79,7 +79,10 @@ namespace TheWorld.Models
                 var theTrip = GetTripByName(tripName, userName);
                 if (theTrip == null)
                     throw new Exception("Trip not found");
-                newStop.Order = theTrip.Stops.Max(s => s.Order) + 1;
+                if (!theTrip.Stops.Any())
+                    newStop.Order = 1;
+                else
+                    newStop.Order = theTrip.Stops.Max(s => s.Order) + 1;
                 theTrip.Stops.Add(newStop);
                 _context.Stops.Add(newStop);
             }
