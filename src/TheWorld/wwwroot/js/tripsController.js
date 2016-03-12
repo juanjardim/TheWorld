@@ -17,7 +17,6 @@
         vm.addTrip = function () {
             vm.isBusy = true;
             vm.errorMessage = "";
-            console.log("Was called");
             dataService.addTrip({
                 name: vm.newTrip.name,
                 created: new Date()

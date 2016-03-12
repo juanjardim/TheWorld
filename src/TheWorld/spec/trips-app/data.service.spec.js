@@ -57,6 +57,51 @@
         "name": "My Trip"
     };
 
+    var stops = [
+        {
+            "id": 1,
+            "name": "Atlanta, GA",
+            "longitude": -84.387982,
+            "latitude": 33.748995,
+            "arrival": "2014-06-04T00:00:00"
+        },
+        {
+            "id": 33,
+            "name": "New York, NY",
+            "longitude": -74.005941,
+            "latitude": 40.712784,
+            "arrival": "2014-06-09T00:00:00"
+        },
+        {
+            "id": 34,
+            "name": "Boston, MA",
+            "longitude": -71.05888,
+            "latitude": 42.360082,
+            "arrival": "2014-07-01T00:00:00"
+        },
+        {
+            "id": 35,
+            "name": "Chicago, IL",
+            "longitude": -87.629798,
+            "latitude": 41.878114,
+            "arrival": "2014-07-10T00:00:00"
+        },
+        {
+            "id": 36,
+            "name": "Seattle, WA",
+            "longitude": -122.332071,
+            "latitude": 47.606209,
+            "arrival": "2014-08-13T00:00:00"
+        },
+        {
+            "id": 37,
+            "name": "Atlanta, GA",
+            "longitude": -84.387982,
+            "latitude": 33.748995,
+            "arrival": "2014-08-23T00:00:00"
+        }
+    ];
+
     beforeEach(module('app-trips'));
 
     beforeEach(inject(function (_$httpBackend_, _dataService_) {
@@ -94,11 +139,27 @@
             .respond(200, newTrip);
 
         dataService.addTrip()
-            .then(function(data) {
+            .then(function (data) {
                 response = data;
             });
 
         $httpBackend.flush();
         expect(response.name).toBe(newTrip.name);
+    });
+
+    it("should get the stops of a trip", function () {
+        var response;
+
+        var expectedUrl = "http://localhost:8050/api/trips/Us%20trip/stops";
+
+        $httpBackend.when('GET', expectedUrl)
+            .respond(200, stops);
+
+        dataService.getStops("Us%20trip")
+            .then(function (data) {
+                response = data;
+            });
+        $httpBackend.flush();
+        expect(response[0].name).toBe(stops[0].name);
     });
 })
